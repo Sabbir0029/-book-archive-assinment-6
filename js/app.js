@@ -1,37 +1,45 @@
 const button = () =>{
+  const searchResult =document.getElementById('searchResult');
   const inputId = document.getElementById('inputId');
   const inputValue = inputId.value;
-  const url =` http://openlibrary.org/search.json?q=${inputValue}`;
-  console.log(url);
-  fetch(url)
-  .then(res => res.json())
-  .then(data => dispaly(data.docs));
+  inputId.value = '';
+  if(inputValue === ''){
+    // Error message
+    const error = document.getElementById('error');
+    const div = document.createElement('div');
+    div.innerHTML=`<p>No Results Found</p>`;
+    error.append(div);
+  }
+  else{
+    const url =` http://openlibrary.org/search.json?q=${inputValue}`;
+    fetch(url)
+    .then(res => res.json())
+    .then(data => display(data.docs));
+  }
 }
-
-const dispaly = (books) =>{
-  console.log(books);
+const display = (books) =>{
+  // Search Result length
+  searchResult.innerHTML =`<h2>search Result ${books.length}</h2>`;
   books.forEach(book => {
+    console.log(book);
     const dispalyId = document.getElementById('dispalyId');
+    // Create Element
     const div = document.createElement('div');
     div.classList.add('card');
     div.innerHTML =`
     <div class="card">
-        <img src="..." class="card-img-top" alt="...">
+        <img src="https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg" class="card-img-top">
         <div class="card-body">
           <h5 class="card-title">${book.title}</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
         </div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item">${book.first_publish_year}</li>
-          <li class="list-group-item">A second item</li>
-          <li class="list-group-item">A third item</li>
+          <li class="list-group-item">Author Name : ${book.author_name}</li>
+          <li class="list-group-item">First Publish Year : ${book.first_publish_year}</li>
+          <li class="list-group-item">publisher : ${book.publisher}</li>
         </ul>
-        <div class="card-body">
-          <a href="#" class="card-link">Card link</a>
-          <a href="#" class="card-link">Another link</a>
-        </div>
       </div>
     `;
+    // Append Child
     dispalyId.appendChild(div);
   });
 }
