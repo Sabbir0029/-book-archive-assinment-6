@@ -1,5 +1,5 @@
 const button = () =>{
-  const searchResult =document.getElementById('searchResult');
+  const searchResult = document.getElementById('searchResult');
   const inputId = document.getElementById('inputId');
   const inputValue = inputId.value;
   inputId.value = '';
@@ -11,7 +11,7 @@ const button = () =>{
     error.append(div);
   }
   else{
-    const url =` http://openlibrary.org/search.json?q=${inputValue}`;
+    const url =` https://openlibrary.org/search.json?q=${inputValue}`;
     fetch(url)
     .then(res => res.json())
     .then(data => display(data.docs));
